@@ -77,7 +77,7 @@ submitWordButton.addEventListener('click', async () => {
 })
 
 function startTimer() {
-    setInterval(() => {
+    const interval = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--
             timerDisplay.textContent = `${timeLeft}s`
@@ -88,7 +88,7 @@ function startTimer() {
             submitWordButton.style.display = 'none'
             startGameButton.style.display = 'block'
             messageDisplay.textContent = 'Time is up!'
-            clearInterval(this)
+            clearInterval(interval)
         }
     }, 1000)
 }
