@@ -1,5 +1,11 @@
 const fs = require('fs')
+const mongoose = require('mongoose')
 const Word = require('../model/Word.js')
+
+mongoose
+    .connect("mongodb://127.0.0.1:27017/antakshari")
+    .then(() => console.log("MongoDB connected"))
+    .catch((err) => console.error("MongoDB connection error:", err))
 
 fs.readFile('words_alpha.txt', 'utf8', async (err, data) => {
     if (err) {

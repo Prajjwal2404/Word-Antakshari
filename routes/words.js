@@ -25,7 +25,7 @@ app.post('/api/validate', async (req, res) => {
 
     const lastLetter = previousWord.slice(-1)
     if (word[0].toLowerCase() !== lastLetter.toLowerCase()) {
-        return res.json({ valid: false, message: 'Word does not start with the last letter of the previous word' })
+        return res.json({ valid: false, message: 'Word does not start with the last letter of the displayed word' })
     }
 
     const isValidWord = await Word.findOne({ word: word.toLowerCase() })

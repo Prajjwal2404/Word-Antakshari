@@ -49,6 +49,7 @@ p {
 }
 
 input[type="text"] {
+    display: none;
     padding: 12px 15px;
     font-size: 16px;
     border: 1px solid #bdc3c7;
@@ -66,7 +67,9 @@ input[type="text"]:focus {
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
-#submit-word {
+#submit-word,
+#start-game {
+    display: none;
     padding: 12px 25px;
     font-size: 16px;
     background-color: #3498db;
@@ -77,9 +80,15 @@ input[type="text"]:focus {
     transition: all 0.3s ease;
 }
 
-#submit-word:hover {
+#submit-word:hover,
+#start-game:hover {
     background-color: #217dbb;
     transform: translateY(-2px);
+}
+
+#start-game {
+    display: block;
+    margin-inline: auto;
 }
 
 #message {
@@ -90,11 +99,18 @@ input[type="text"]:focus {
     transition: color 0.3s ease;
 }
 
-#score {
+#scoreboard {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#score,
+#timer {
     font-size: 20px;
     font-weight: 600;
     color: #f39c12;
-    margin-top: 15px;
     transition: color 0.3s ease;
 }
 

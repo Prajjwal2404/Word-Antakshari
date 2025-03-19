@@ -1,21 +1,33 @@
 const currentWordDisplay = document.getElementById('current-word')
 const wordInput = document.getElementById('word-input')
 const submitWordButton = document.getElementById('submit-word')
+const startGameButton = document.getElementById('start-game')
 const messageDisplay = document.getElementById('message')
 const scoreDisplay = document.getElementById('score')
+const timerDisplay = document.getElementById('timer')
 
 let score = 0
 let previousWord = ''
+let consecutiveWords = 0
+let timeLeft = 30
 
 async function startGame() {
+    score = 0
+    consecutiveWords = 0
+    timeLeft = 30
+    timerDisplay.textContent = `${timeLeft}s`
+    messageDisplay.textContent = ''
+    startGameButton.style.display = 'none'
+    wordInput.style.display = 'inline-block'
+    submitWordButton.style.display = 'inline-block'
     const response = await fetch('http://localhost:5000/api/start')
     const data = await response.json()
     currentWordDisplay.textContent = data.word
     previousWord = data.word
     scoreDisplay.textContent = score
     wordInput.focus()
+    startTimer()
 }
-
 
 async function validateWord(word) {
     const response = await fetch('http://localhost:5000/api/validate', {
@@ -46,22 +58,39 @@ submitWordButton.addEventListener('click', async () => {
     const result = await validateWord(word)
 
     if (result.valid) {
+        consecutiveWords++
+        if (consecutiveWords === 2) score += 5
+        else if (consecutiveWords === 3) score += 10
+        else if (consecutiveWords > 3) score += 15
         messageDisplay.textContent = 'Correct!'
         scoreDisplay.textContent = score += word.length
         currentWordDisplay.textContent = result.nextWord
         previousWord = result.nextWord
+        timeLeft = 30
+        timerDisplay.textContent = `${timeLeft}s`
     } else {
+        consecutiveWords = 0
         messageDisplay.textContent = result.message
     }
     wordInput.value = ''
     wordInput.focus()
 })
 
+function startTimer() {
+    setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--
+            timerDisplay.textContent = `${timeLeft}s`
+        } else {
+            wordInput.blur()
+            wordInput.value = ''
+            wordInput.style.display = 'none'
+            submitWordButton.style.display = 'none'
+            startGameButton.style.display = 'block'
+            messageDisplay.textContent = 'Time is up!'
+            clearInterval(this)
+        }
+    }, 1000)
+}
 
-wordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        submitWordButton.click()
-    }
-})
-
-startGame()
+startGameButton.addEventListener('click', startGame)
